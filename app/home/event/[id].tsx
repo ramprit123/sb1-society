@@ -52,31 +52,25 @@ export default function EventDetailScreen() {
   return (
     <ScrollView style={styles.container}>
       <Image source={{ uri: event.image }} style={styles.coverImage} />
-      
-      <TouchableOpacity 
-        style={styles.backButton}
-        onPress={() => router.back()}
-      >
+
+      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
         <ChevronLeft size={24} color="#FFF" />
       </TouchableOpacity>
 
-      <Animated.View 
-        entering={FadeIn.duration(600)}
-        style={styles.content}
-      >
+      <Animated.View entering={FadeIn.duration(600)} style={styles.content}>
         <Text style={styles.title}>{event.title}</Text>
-        
+
         <View style={styles.infoContainer}>
           <View style={styles.infoRow}>
             <Calendar size={20} color="#6B7280" />
             <Text style={styles.infoText}>{event.date}</Text>
           </View>
-          
+
           <View style={styles.infoRow}>
             <MapPin size={20} color="#6B7280" />
             <Text style={styles.infoText}>{event.location}</Text>
           </View>
-          
+
           <View style={styles.infoRow}>
             <Users size={20} color="#6B7280" />
             <Text style={styles.infoText}>{event.attendees} Attending</Text>
@@ -92,7 +86,7 @@ export default function EventDetailScreen() {
           <Text style={styles.sectionTitle}>
             {event.id === 1 ? 'Agenda' : 'Menu'}
           </Text>
-          {(event.id === 1 ? event.agenda : event.menu).map((item, index) => (
+          {(event.id === 1 ? event.agenda! : event.menu!).map((item, index) => (
             <View key={index} style={styles.listItem}>
               <View style={styles.bullet} />
               <Text style={styles.listItemText}>{item}</Text>
