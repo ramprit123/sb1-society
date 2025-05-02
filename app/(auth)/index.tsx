@@ -24,7 +24,7 @@ export default function LoginScreen() {
 
   const handleSocialLogin = (provider: string) => {
     console.log(`Login with ${provider}`);
-    router.replace('/(tabs)');
+    router.replace('/(tabs)/home');
   };
 
   return (
@@ -36,7 +36,7 @@ export default function LoginScreen() {
         entering={FadeIn.duration(600)}
         style={styles.logoContainer}
       >
-        <Text style={styles.appTitle}>SocietyConnect</Text>
+        <Text style={styles.appTitle}>Society Connect</Text>
       </Animated.View>
 
       <Animated.View

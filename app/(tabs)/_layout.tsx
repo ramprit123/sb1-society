@@ -1,26 +1,25 @@
-import { useRef } from 'react';
 import { Tabs } from 'expo-router';
 import {
-  View,
-  StyleSheet,
+  CreditCard,
+  Grid2x2 as Grid,
+  Chrome as Home,
+  User,
+  Users,
+} from 'lucide-react-native';
+import {
   Dimensions,
-  TouchableOpacity,
+  Platform,
+  StyleSheet,
   Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import Animated, {
   useAnimatedStyle,
-  withSpring,
   useDerivedValue,
   useSharedValue,
+  withSpring,
 } from 'react-native-reanimated';
-import {
-  Chrome as Home,
-  Grid2x2 as Grid,
-  Users,
-  CreditCard,
-  User,
-} from 'lucide-react-native';
-import { getPathFromState } from '@react-navigation/native'; // Import necessary function
 
 const { width } = Dimensions.get('window');
 const TAB_WIDTH = width / 5; // Assuming 5 tabs
@@ -50,6 +49,22 @@ export default function TabLayout() {
         // Hide the default tab bar completely
         tabBarStyle: {
           display: 'none', // Hide the default tab bar
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          elevation: 0,
+          backgroundColor: '#FFFFFF',
+          borderTopWidth: 1,
+          borderTopColor: '#F1F5F9',
+          height: 70,
+          paddingBottom: Platform.OS === 'ios' ? 20 : 0, // Add padding for iOS devices
+          shadowOffset: {
+            width: 0,
+            height: -1,
+          },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
         },
       }}
       // Provide a custom component to render the entire tab bar
@@ -99,7 +114,7 @@ export default function TabLayout() {
 
               // Determine icon component based on route name
               const Icon = {
-                index: Home,
+                home: Home,
                 services: Grid,
                 community: Users,
                 payments: CreditCard,
@@ -139,7 +154,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: 'Home',
           // Icon is now rendered in the custom tabBar
