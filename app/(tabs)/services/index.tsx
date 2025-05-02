@@ -1,6 +1,17 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import Animated, { FadeInDown, FadeIn } from 'react-native-reanimated';
-import { ChevronLeft, Droplet, Zap, Clock, CircleAlert as AlertCircle } from 'lucide-react-native';
+import {
+  ChevronLeft,
+  Droplet,
+  Zap,
+  Clock,
+  CircleAlert as AlertCircle,
+  Brush,
+  Shield,
+  Wrench,
+  MoreHorizontal,
+} from 'lucide-react-native';
+import { router } from 'expo-router';
 
 export default function ServicesScreen() {
   const activeRequests = [
@@ -23,10 +34,14 @@ export default function ServicesScreen() {
   const serviceCategories = [
     { id: 1, name: 'Plumbing', icon: <Droplet size={24} color="#7E3AF2" /> },
     { id: 2, name: 'Electrical', icon: <Zap size={24} color="#7E3AF2" /> },
-    { id: 3, name: 'Cleaning', icon: <AlertCircle size={24} color="#7E3AF2" /> },
-    { id: 4, name: 'Security', icon: <AlertCircle size={24} color="#7E3AF2" /> },
-    { id: 5, name: 'Maintenance', icon: <AlertCircle size={24} color="#7E3AF2" /> },
-    { id: 6, name: 'Others', icon: <AlertCircle size={24} color="#7E3AF2" /> },
+    { id: 3, name: 'Cleaning', icon: <Brush size={24} color="#7E3AF2" /> },
+    { id: 4, name: 'Security', icon: <Shield size={24} color="#7E3AF2" /> },
+    { id: 5, name: 'Maintenance', icon: <Wrench size={24} color="#7E3AF2" /> },
+    {
+      id: 6,
+      name: 'Others',
+      icon: <MoreHorizontal size={24} color="#7E3AF2" />,
+    },
   ];
   
   const recentRequests = [
@@ -58,36 +73,30 @@ export default function ServicesScreen() {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <Animated.View 
-        entering={FadeIn.duration(600)}
-        style={styles.header}
-      >
+      <Animated.View entering={FadeIn.duration(600)} style={styles.header}>
         <TouchableOpacity style={styles.backButton}>
           <ChevronLeft size={24} color="#333" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Complaints & Requests</Text>
       </Animated.View>
-      
-      <Animated.View 
+
+      <Animated.View
         entering={FadeInDown.duration(600).delay(100)}
         style={styles.section}
       >
         <Text style={styles.sectionTitle}>Active Requests</Text>
         <View style={styles.activeRequestsContainer}>
           {activeRequests.map((request, index) => (
-            <TouchableOpacity 
-              key={request.id} 
-              style={styles.activeRequestCard}
-            >
-              <View style={styles.requestIconContainer}>
-                {request.icon}
-              </View>
+            <TouchableOpacity key={request.id} style={styles.activeRequestCard}>
+              <View style={styles.requestIconContainer}>{request.icon}</View>
               <View style={styles.requestInfo}>
                 <Text style={styles.requestType}>{request.type}</Text>
-                <Text 
+                <Text
                   style={[
-                    styles.requestStatus, 
-                    request.status === 'In Progress' ? styles.statusInProgress : styles.statusPending
+                    styles.requestStatus,
+                    request.status === 'In Progress'
+                      ? styles.statusInProgress
+                      : styles.statusPending,
                   ]}
                 >
                   {request.status}
@@ -101,48 +110,44 @@ export default function ServicesScreen() {
           ))}
         </View>
       </Animated.View>
-      
-      <Animated.View 
+
+      <Animated.View
         entering={FadeInDown.duration(600).delay(200)}
         style={styles.section}
       >
         <Text style={styles.sectionTitle}>Submit New Request</Text>
         <View style={styles.categoriesContainer}>
           {serviceCategories.map((category) => (
-            <TouchableOpacity 
-              key={category.id} 
+            <TouchableOpacity
+              key={category.id}
               style={styles.categoryCard}
+              onPress={() =>
+                router.push(`/services/${category.name.toLowerCase()}`)
+              }
             >
-              <View style={styles.categoryIconContainer}>
-                {category.icon}
-              </View>
+              <View style={styles.categoryIconContainer}>{category.icon}</View>
               <Text style={styles.categoryName}>{category.name}</Text>
             </TouchableOpacity>
           ))}
         </View>
       </Animated.View>
-      
-      <Animated.View 
+
+      <Animated.View
         entering={FadeInDown.duration(600).delay(300)}
         style={styles.section}
       >
         <Text style={styles.sectionTitle}>Recent Requests</Text>
         <View style={styles.recentRequestsContainer}>
           {recentRequests.map((request) => (
-            <TouchableOpacity 
-              key={request.id} 
-              style={styles.recentRequestItem}
-            >
-              <View style={styles.recentRequestIcon}>
-                {request.icon}
-              </View>
+            <TouchableOpacity key={request.id} style={styles.recentRequestItem}>
+              <View style={styles.recentRequestIcon}>{request.icon}</View>
               <View style={styles.recentRequestInfo}>
                 <Text style={styles.recentRequestType}>{request.type}</Text>
                 <View style={styles.requestStatusRow}>
-                  <Text 
+                  <Text
                     style={[
-                      styles.recentRequestStatus, 
-                      { color: request.statusColor }
+                      styles.recentRequestStatus,
+                      { color: request.statusColor },
                     ]}
                   >
                     {request.status}
@@ -150,21 +155,28 @@ export default function ServicesScreen() {
                   <Text style={styles.recentRequestTime}>{request.time}</Text>
                 </View>
               </View>
-              <ChevronLeft style={styles.chevronIcon} size={18} color="#CBD5E1" />
+              <ChevronLeft
+                style={styles.chevronIcon}
+                size={18}
+                color="#CBD5E1"
+              />
             </TouchableOpacity>
           ))}
         </View>
       </Animated.View>
-      
-      <Animated.View 
+
+      <Animated.View
         entering={FadeInDown.duration(600).delay(400)}
         style={styles.createButtonContainer}
       >
-        <TouchableOpacity style={styles.createButton}>
+        <TouchableOpacity
+          style={styles.createButton}
+          onPress={() => router.push('/services/others')}
+        >
           <Text style={styles.createButtonText}>Create New Request</Text>
         </TouchableOpacity>
       </Animated.View>
-      
+
       <View style={styles.spacer} />
     </ScrollView>
   );
