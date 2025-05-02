@@ -14,53 +14,64 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <Animated.View 
-        entering={FadeIn.duration(600)}
-        style={styles.header}
-      >
+      <Animated.View entering={FadeIn.duration(600)} style={styles.header}>
         <Text style={styles.headerTitle}>Profile</Text>
       </Animated.View>
-      
-      <Animated.View 
+
+      <Animated.View
         entering={FadeInDown.duration(600).delay(100)}
         style={styles.profileCard}
       >
-        <Image 
-          source={{ uri: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=150' }}
+        <Image
+          source={{
+            uri: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=150',
+          }}
           style={styles.profileAvatar}
         />
         <View style={styles.profileInfo}>
           <Text style={styles.profileName}>Alex Johnson</Text>
           <Text style={styles.profileAddress}>Block C, Apartment 507</Text>
         </View>
-        <TouchableOpacity style={styles.editButton}>
+        <TouchableOpacity
+          style={styles.editButton}
+          onPress={() => router.push('/profile/edit')}
+        >
           <Text style={styles.editButtonText}>Edit</Text>
         </TouchableOpacity>
       </Animated.View>
-      
-      <Animated.View 
+
+      <Animated.View
         entering={FadeInDown.duration(600).delay(200)}
         style={styles.section}
       >
         <Text style={styles.sectionTitle}>Account Settings</Text>
-        
-        <TouchableOpacity style={styles.menuItem}>
+
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => router.push('/profile/personal-information')}
+        >
           <View style={[styles.menuIconContainer, styles.purpleLight]}>
             <User size={20} color="#7E3AF2" />
           </View>
           <Text style={styles.menuItemText}>Personal Information</Text>
           <ChevronRight size={18} color="#CBD5E1" />
         </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.menuItem}>
+
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => router.push('/profile/payment-methods')}
+        >
           <View style={[styles.menuIconContainer, styles.greenLight]}>
             <CreditCard size={20} color="#10B981" />
           </View>
           <Text style={styles.menuItemText}>Payment Methods</Text>
           <ChevronRight size={18} color="#CBD5E1" />
         </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.menuItem}>
+
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => router.push('/profile/security')}
+        >
           <View style={[styles.menuIconContainer, styles.blueLight]}>
             <Lock size={20} color="#3B82F6" />
           </View>
@@ -68,13 +79,13 @@ export default function ProfileScreen() {
           <ChevronRight size={18} color="#CBD5E1" />
         </TouchableOpacity>
       </Animated.View>
-      
-      <Animated.View 
+
+      <Animated.View
         entering={FadeInDown.duration(600).delay(300)}
         style={styles.section}
       >
         <Text style={styles.sectionTitle}>Preferences</Text>
-        
+
         <View style={styles.switchItem}>
           <View style={[styles.menuIconContainer, styles.orangeLight]}>
             <Bell size={20} color="#F97316" />
@@ -87,7 +98,7 @@ export default function ProfileScreen() {
             thumbColor={notificationsEnabled ? '#7E3AF2' : '#F1F5F9'}
           />
         </View>
-        
+
         <View style={styles.switchItem}>
           <View style={[styles.menuIconContainer, styles.slate]}>
             <Settings size={20} color="#64748B" />
@@ -101,22 +112,28 @@ export default function ProfileScreen() {
           />
         </View>
       </Animated.View>
-      
-      <Animated.View 
+
+      <Animated.View
         entering={FadeInDown.duration(600).delay(400)}
         style={styles.section}
       >
         <Text style={styles.sectionTitle}>Support</Text>
-        
-        <TouchableOpacity style={styles.menuItem}>
+
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => router.push('/profile/help-center')}
+        >
           <View style={[styles.menuIconContainer, styles.blueLight]}>
             <HelpCircle size={20} color="#3B82F6" />
           </View>
           <Text style={styles.menuItemText}>Help Center</Text>
           <ChevronRight size={18} color="#CBD5E1" />
         </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.menuItem}>
+
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => router.push('/profile/terms')}
+        >
           <View style={[styles.menuIconContainer, styles.slate]}>
             <Settings size={20} color="#64748B" />
           </View>
@@ -124,27 +141,24 @@ export default function ProfileScreen() {
           <ChevronRight size={18} color="#CBD5E1" />
         </TouchableOpacity>
       </Animated.View>
-      
-      <Animated.View 
+
+      <Animated.View
         entering={FadeInDown.duration(600).delay(500)}
         style={styles.logoutContainer}
       >
-        <TouchableOpacity 
-          style={styles.logoutButton}
-          onPress={handleLogout}
-        >
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <LogOut size={20} color="#EF4444" />
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
       </Animated.View>
-      
-      <Animated.View 
+
+      <Animated.View
         entering={FadeIn.duration(600).delay(600)}
         style={styles.versionContainer}
       >
         <Text style={styles.versionText}>SocietyConnect v1.0.0</Text>
       </Animated.View>
-      
+
       <View style={styles.spacer} />
     </ScrollView>
   );
