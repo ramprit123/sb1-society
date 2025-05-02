@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { SafeAreaView } from 'react-native';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import {
   useFonts,
@@ -35,19 +36,21 @@ export default function RootLayout() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen
-          name="(tabs)"
-          options={{ animation: 'slide_from_right' }}
-        />
-        <Stack.Screen
-          name="(auth)"
-          options={{ animation: 'slide_from_right' }}
-        />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </GestureHandlerRootView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen
+            name="(tabs)"
+            options={{ animation: 'slide_from_right' }}
+          />
+          <Stack.Screen
+            name="(auth)"
+            options={{ animation: 'slide_from_right' }}
+          />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
+      </GestureHandlerRootView>
+    </SafeAreaView>
   );
 }
