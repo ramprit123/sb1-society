@@ -100,7 +100,7 @@ export default function HomeScreen() {
   });
 
   const handleQuickAction = (action: string) => {
-    // router.push(`/home/${action}`);
+    router.push(`/(tabs)/home/${action}` as any);
   };
 
   const handleEventPress = (id: number) => {
