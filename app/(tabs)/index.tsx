@@ -1,21 +1,20 @@
+import { router } from 'expo-router';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
-import Animated, { FadeInDown, FadeIn } from 'react-native-reanimated';
-
-// Corrected import for lucide-react-native icons
-import {
-  Wallet as LucideWallet,
-  CircleAlert as LucideAlertCircle,
-  UserPlus as LucideUserPlus,
-  Calendar as LucideCalendar,
-  Users as LucideUsers,
+  CircleAlert as AlertCircle,
+  Calendar,
+  ChevronRight,
+  UserPlus,
+  Wallet,
 } from 'lucide-react-native';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 
 import { formatCurrency } from '@/utils/formatters';
 
@@ -27,6 +26,71 @@ const CURRENT_USER = {
   dueDate: '2024-04-30',
 };
 
+const events = [
+  {
+    id: 1,
+    title: 'Annual Society Meeting',
+    date: 'Apr 25, 7:00 PM',
+    location: 'Community Hall',
+    image:
+      'https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=600',
+    description:
+      'Join us for our annual society meeting where we will discuss upcoming projects, budget allocation, and elect new committee members.',
+    agenda: [
+      'Welcome and Introduction',
+      'Financial Report 2023-24',
+      'Maintenance Projects Update',
+      'Committee Election',
+      'Open Discussion',
+    ],
+  },
+  {
+    id: 2,
+    title: 'Community Lunch',
+    date: 'Apr 28, 12:00 PM',
+    location: 'Society Garden',
+    image:
+      'https://images.pexels.com/photos/7500307/pexels-photo-7500307.jpeg?auto=compress&cs=tinysrgb&w=600',
+    description:
+      'A wonderful opportunity to meet your neighbors and enjoy delicious food together. Each family is encouraged to bring one dish.',
+    menu: ['Welcome Drinks', 'Appetizers', 'Main Course', 'Desserts'],
+  },
+];
+
+const updates = [
+  {
+    id: 1,
+    title: 'Water Supply Notice',
+    description: 'Scheduled maintenance on Apr 24, 10 PM - 11 PM',
+    time: '2 hours ago',
+    type: 'maintenance',
+    fullDescription:
+      'Due to essential maintenance work on the main water supply line, there will be no water supply during the specified time. Please store water in advance. Emergency water tankers will be available if needed.',
+    affectedAreas: ['Block A', 'Block B', 'Block C'],
+    contactPerson: 'Mr. Sharma (Maintenance Head)',
+    contactNumber: '+91 98765 43210',
+  },
+  {
+    id: 2,
+    title: 'New Activity Center Timings',
+    description: 'Updated hours: 6 AM - 10 PM',
+    time: '1 day ago',
+    type: 'announcement',
+    fullDescription:
+      "Based on resident feedback, we have extended the Activity Center timing. New rules and regulations have been put in place to ensure everyone's safety and comfort.",
+    newTimings: {
+      weekdays: '6:00 AM - 10:00 PM',
+      weekends: '5:30 AM - 11:00 PM',
+    },
+    rules: [
+      'Please carry your resident ID',
+      'Maximum 2 guests allowed per resident',
+      'Prior booking required for groups',
+      'Please maintain cleanliness',
+    ],
+  },
+];
+
 export default function HomeScreen() {
   const today = new Date();
   const formattedDate = today.toLocaleDateString('en-US', {
@@ -34,6 +98,18 @@ export default function HomeScreen() {
     month: 'long',
     day: 'numeric',
   });
+
+  const handleQuickAction = (action: string) => {
+    // router.push(`/home/${action}`);
+  };
+
+  const handleEventPress = (id: number) => {
+    router.push(`/home/event/${id}`);
+  };
+
+  const handleUpdatePress = (id: number) => {
+    router.push(`/home/update/${id}`);
+  };
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -51,30 +127,42 @@ export default function HomeScreen() {
         entering={FadeInDown.duration(600).delay(100)}
         style={styles.quickActionsContainer}
       >
-        <TouchableOpacity style={styles.quickAction}>
+        <TouchableOpacity
+          style={styles.quickAction}
+          onPress={() => handleQuickAction('pay-dues')}
+        >
           <View style={[styles.iconContainer, styles.purpleLight]}>
-            <LucideWallet size={24} color="#7E3AF2" />
+            <Wallet size={24} color="#7E3AF2" />
           </View>
           <Text style={styles.quickActionText}>Pay Dues</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.quickAction}>
+        <TouchableOpacity
+          style={styles.quickAction}
+          onPress={() => handleQuickAction('report-issue')}
+        >
           <View style={[styles.iconContainer, styles.orangeLight]}>
-            <LucideAlertCircle size={24} color="#F97316" />
+            <AlertCircle size={24} color="#F97316" />
           </View>
           <Text style={styles.quickActionText}>Report Issue</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.quickAction}>
+        <TouchableOpacity
+          style={styles.quickAction}
+          onPress={() => handleQuickAction('invite-guest')}
+        >
           <View style={[styles.iconContainer, styles.blueLight]}>
-            <LucideUserPlus size={24} color="#3B82F6" />
+            <UserPlus size={24} color="#3B82F6" />
           </View>
           <Text style={styles.quickActionText}>Invite Guest</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.quickAction}>
+        <TouchableOpacity
+          style={styles.quickAction}
+          onPress={() => handleQuickAction('book-amenity')}
+        >
           <View style={[styles.iconContainer, styles.greenLight]}>
-            <LucideCalendar size={24} color="#10B981" />
+            <Calendar size={24} color="#10B981" />
           </View>
           <Text style={styles.quickActionText}>Book Amenity</Text>
         </TouchableOpacity>
@@ -120,49 +208,27 @@ export default function HomeScreen() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.eventsContainer}
       >
-        <Animated.View
-          entering={FadeInDown.duration(600).delay(350)}
-          style={styles.eventCard}
-        >
-          <Image
-            source={{
-              uri: 'https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=600',
-            }}
-            style={styles.eventImage}
-          />
-          <View style={styles.eventDetails}>
-            <Text style={styles.eventTitle}>Annual Society Meeting</Text>
-            <View style={styles.eventInfoRow}>
-              <LucideCalendar size={16} color="#666" />
-              <Text style={styles.eventInfo}>Apr 25, 7:00 PM</Text>
-            </View>
-            <View style={styles.eventInfoRow}>
-              <Text style={styles.eventInfo}>Community Hall</Text>
-            </View>
-          </View>
-        </Animated.View>
-
-        <Animated.View
-          entering={FadeInDown.duration(600).delay(400)}
-          style={styles.eventCard}
-        >
-          <Image
-            source={{
-              uri: 'https://images.pexels.com/photos/7500307/pexels-photo-7500307.jpeg?auto=compress&cs=tinysrgb&w=600',
-            }}
-            style={styles.eventImage}
-          />
-          <View style={styles.eventDetails}>
-            <Text style={styles.eventTitle}>Community Lunch</Text>
-            <View style={styles.eventInfoRow}>
-              <LucideCalendar size={16} color="#666" />
-              <Text style={styles.eventInfo}>Apr 28, 12:00 PM</Text>
-            </View>
-            <View style={styles.eventInfoRow}>
-              <Text style={styles.eventInfo}>Society Garden</Text>
-            </View>
-          </View>
-        </Animated.View>
+        {events.map((event) => (
+          <Animated.View
+            key={event.id}
+            entering={FadeInDown.duration(600).delay(350)}
+            style={styles.eventCard}
+          >
+            <TouchableOpacity onPress={() => handleEventPress(event.id)}>
+              <Image source={{ uri: event.image }} style={styles.eventImage} />
+              <View style={styles.eventDetails}>
+                <Text style={styles.eventTitle}>{event.title}</Text>
+                <View style={styles.eventInfoRow}>
+                  <Calendar size={16} color="#666" />
+                  <Text style={styles.eventInfo}>{event.date}</Text>
+                </View>
+                <View style={styles.eventInfoRow}>
+                  <Text style={styles.eventInfo}>{event.location}</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </Animated.View>
+        ))}
       </ScrollView>
 
       <Animated.View
@@ -176,47 +242,23 @@ export default function HomeScreen() {
         entering={FadeInDown.duration(600).delay(500)}
         style={styles.updatesList}
       >
-        <TouchableOpacity style={styles.updateItem}>
-          <View style={[styles.updateIconContainer, styles.orangeLight]}>
-            <LucideAlertCircle size={20} color="#F97316" />
-          </View>
-          <View style={styles.updateTextContainer}>
-            <Text style={styles.updateTitle}>Water Supply Notice</Text>
-            <Text style={styles.updateDescription}>
-              Scheduled maintenance on Apr 24, 10 PM - 11 PM
-            </Text>
-            <Text style={styles.updateTime}>2 hours ago</Text>
-          </View>
-          <View style={styles.chevron} />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.updateItem}>
-          <View style={[styles.updateIconContainer, styles.purpleLight]}>
-            <LucideCalendar size={20} color="#7E3AF2" />
-          </View>
-          <View style={styles.updateTextContainer}>
-            <Text style={styles.updateTitle}>New Activity Center Timings</Text>
-            <Text style={styles.updateDescription}>
-              Updated hours: 6 AM - 10 PM
-            </Text>
-            <Text style={styles.updateTime}>1 day ago</Text>
-          </View>
-          <View style={styles.chevron} />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.updateItem}>
-          <View style={[styles.updateIconContainer, styles.blueLight]}>
-            <LucideUsers size={20} color="#3B82F6" />
-          </View>
-          <View style={styles.updateTextContainer}>
-            <Text style={styles.updateTitle}>New Resident Welcome</Text>
-            <Text style={styles.updateDescription}>
-              Welcome to Sarah & Family in Block B, Apt 402
-            </Text>
-            <Text style={styles.updateTime}>2 days ago</Text>
-          </View>
-          <View style={styles.chevron} />
-        </TouchableOpacity>
+        {updates.map((update) => (
+          <TouchableOpacity
+            key={update.id}
+            style={styles.updateItem}
+            onPress={() => handleUpdatePress(update.id)}
+          >
+            <View style={[styles.updateIconContainer, styles.orangeLight]}>
+              <AlertCircle size={20} color="#F97316" />
+            </View>
+            <View style={styles.updateTextContainer}>
+              <Text style={styles.updateTitle}>{update.title}</Text>
+              <Text style={styles.updateDescription}>{update.description}</Text>
+              <Text style={styles.updateTime}>{update.time}</Text>
+            </View>
+            <ChevronRight size={20} color="#CBD5E1" />
+          </TouchableOpacity>
+        ))}
       </Animated.View>
 
       <View style={styles.spacer} />
@@ -403,6 +445,7 @@ const styles = StyleSheet.create({
   },
   updateItem: {
     flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#FFFFFF',
     paddingVertical: 16,
     borderBottomWidth: 1,
@@ -436,15 +479,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-Regular',
     fontSize: 12,
     color: '#6B7280',
-  },
-  chevron: {
-    // This was an empty View, likely intended for a chevron icon or visual indicator.
-    // Since there's no actual content or style for a visual chevron,
-    // I'll keep it as is, but you might want to add an icon here.
-    width: 6,
-    height: 12,
-    marginLeft: 12,
-    alignSelf: 'center',
   },
   spacer: {
     height: 40,

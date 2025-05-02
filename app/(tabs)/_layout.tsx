@@ -1,36 +1,45 @@
+import { useRef } from 'react';
 import { Tabs } from 'expo-router';
-import React from 'react';
 import {
-  ChromeIcon,
-  CreditCard,
-  Grid2x2 as Grid,
-  Home,
-  User,
-  Users,
-  Bell,
-} from 'lucide-react-native';
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  Text,
 } from 'react-native';
 import Animated, {
   useAnimatedStyle,
+  withSpring,
+  useDerivedValue,
   useSharedValue,
-  withTiming,
 } from 'react-native-reanimated';
+import {
+  Chrome as Home,
+  Grid2x2 as Grid,
+  Users,
+  CreditCard,
+  User,
+} from 'lucide-react-native';
+import { getPathFromState } from '@react-navigation/native'; // Import necessary function
 
 const { width } = Dimensions.get('window');
-const TAB_WIDTH = width / 5;
+const TAB_WIDTH = width / 5; // Assuming 5 tabs
 
 export default function TabLayout() {
+  // Use useSharedValue for values that drive animations
   const activeIndex = useSharedValue(0);
+
+  const indicatorPosition = useDerivedValue(() => {
+    // Use withSpring for a bouncy animation, or withTiming for a smooth transition
+    return withSpring(activeIndex.value * TAB_WIDTH, {
+      damping: 20,
+      stiffness: 90,
+    });
+  });
 
   const indicatorStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: withTiming(activeIndex.value * TAB_WIDTH) }],
+      transform: [{ translateX: indicatorPosition.value }],
     };
   });
 
@@ -45,7 +54,13 @@ export default function TabLayout() {
       }}
       // Provide a custom component to render the entire tab bar
       tabBar={(props) => {
-        // Move useEffect outside of tabBar component
+        // Update the active index when the tab changes
+        const currentRoute = props.state.routes[props.state.index];
+        const currentIndex = props.state.index;
+        if (activeIndex.value !== currentIndex) {
+          activeIndex.value = currentIndex;
+        }
+
         return (
           <View style={styles.tabBarContainer}>
             {/* Animated indicator */}
@@ -127,68 +142,41 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ size, color }) => <Home size={size} color={color} />,
-        }}
-        listeners={{
-          tabPress: () => {
-            activeIndex.value = 0;
-          },
+          // Icon is now rendered in the custom tabBar
+          tabBarIcon: () => null, // Or keep if you still use it elsewhere
         }}
       />
       <Tabs.Screen
         name="services"
         options={{
           title: 'Services',
-          tabBarIcon: ({ size, color }) => <Grid size={size} color={color} />,
-        }}
-        listeners={{
-          tabPress: () => {
-            activeIndex.value = 1;
-          },
+          tabBarIcon: () => null,
         }}
       />
       <Tabs.Screen
         name="community"
         options={{
           title: 'Community',
-          tabBarIcon: ({ size, color }) => <Users size={size} color={color} />,
-        }}
-        listeners={{
-          tabPress: () => {
-            activeIndex.value = 2;
-          },
+          tabBarIcon: () => null,
         }}
       />
       <Tabs.Screen
         name="payments"
         options={{
           title: 'Payments',
-          tabBarIcon: ({ size, color }) => (
-            <CreditCard size={size} color={color} />
-          ),
-        }}
-        listeners={{
-          tabPress: () => {
-            activeIndex.value = 3;
-          },
+          tabBarIcon: () => null,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ size, color }) => <User size={size} color={color} />,
-        }}
-        listeners={{
-          tabPress: () => {
-            activeIndex.value = 4;
-          },
+          tabBarIcon: () => null,
         }}
       />
     </Tabs>
   );
 }
-
 
 const styles = StyleSheet.create({
   tabBarContainer: {

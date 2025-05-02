@@ -11,7 +11,6 @@ import {
 } from '@expo-google-fonts/inter';
 import * as SplashScreen from 'expo-splash-screen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,20 +36,18 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen
-            name="(tabs)"
-            options={{ animation: 'slide_from_right' }}
-          />
-          <Stack.Screen
-            name="(auth)"
-            options={{ animation: 'slide_from_right' }}
-          />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-      </SafeAreaProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          name="(tabs)"
+          options={{ animation: 'slide_from_right' }}
+        />
+        <Stack.Screen
+          name="(auth)"
+          options={{ animation: 'slide_from_right' }}
+        />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <StatusBar style="auto" />
     </GestureHandlerRootView>
   );
 }
