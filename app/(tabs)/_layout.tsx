@@ -1,13 +1,21 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 import {
+  ChromeIcon,
   CreditCard,
   Grid2x2 as Grid,
-  Chrome as Home,
+  Home,
   User,
   Users,
+  Bell,
 } from 'lucide-react-native';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -28,97 +36,92 @@ export default function TabLayout() {
 
   return (
     <Tabs
-    screenOptions={{
-      headerShown: false,
-      // Hide the default tab bar completely
-      tabBarStyle: {
-        display: 'none', // Hide the default tab bar
-      },
-    }}
-    // Provide a custom component to render the entire tab bar
-    tabBar={(props) => {
-      // Update the active index when the tab changes using useEffect
-      React.useEffect(() => {
-        const currentIndex = props.state.index;
-        activeIndex.value = currentIndex;
-      }, [props.state.index]);
+      screenOptions={{
+        headerShown: false,
+        // Hide the default tab bar completely
+        tabBarStyle: {
+          display: 'none', // Hide the default tab bar
+        },
+      }}
+      // Provide a custom component to render the entire tab bar
+      tabBar={(props) => {
+        // Move useEffect outside of tabBar component
+        return (
+          <View style={styles.tabBarContainer}>
+            {/* Animated indicator */}
+            <Animated.View style={[styles.indicator, indicatorStyle]} />
 
-      return (
-        <View style={styles.tabBarContainer}>
-          {/* Animated indicator */}
-          <Animated.View style={[styles.indicator, indicatorStyle]} />
+            {/* Manually render tab bar buttons */}
+            {props.state.routes.map((route, index) => {
+              const { options } = props.descriptors[route.key];
+              const label =
+                options.tabBarLabel !== undefined
+                  ? options.tabBarLabel
+                  : options.title !== undefined
+                  ? options.title
+                  : route.name;
 
-          {/* Manually render tab bar buttons */}
-          {props.state.routes.map((route, index) => {
-            const { options } = props.descriptors[route.key];
-            const label =
-              options.tabBarLabel !== undefined
-                ? options.tabBarLabel
-                : options.title !== undefined
-                ? options.title
-                : route.name;
+              const isFocused = props.state.index === index;
 
-            const isFocused = props.state.index === index;
+              const onPress = () => {
+                const event = props.navigation.emit({
+                  type: 'tabPress',
+                  target: route.key,
+                  canPreventDefault: true,
+                });
 
-            const onPress = () => {
-              const event = props.navigation.emit({
-                type: 'tabPress',
-                target: route.key,
-                canPreventDefault: true,
-              });
+                if (!isFocused && !event.defaultPrevented) {
+                  props.navigation.navigate(route.name, route.params);
+                }
+              };
 
-              if (!isFocused && !event.defaultPrevented) {
-                props.navigation.navigate(route.name, route.params);
-              }
-            };
+              const onLongPress = () => {
+                props.navigation.emit({
+                  type: 'tabLongPress',
+                  target: route.key,
+                });
+              };
 
-            const onLongPress = () => {
-              props.navigation.emit({
-                type: 'tabLongPress',
-                target: route.key,
-              });
-            };
+              // Determine icon component based on route name
+              const Icon = {
+                index: Home,
+                services: Grid,
+                community: Users,
+                payments: CreditCard,
+                profile: User,
+                // Add other route names and their corresponding icons here
+              }[route.name];
 
-            // Determine icon component based on route name
-            const Icon = {
-              index: Home,
-              services: Grid,
-              community: Users,
-              payments: CreditCard,
-              profile: User,
-              // Add other route names and their corresponding icons here
-            }[route.name];
-
-            return (
-              <TouchableOpacity
-                key={route.key}
-                accessibilityRole="button"
-                accessibilityState={isFocused ? { selected: true } : {}}
-                accessibilityLabel={options.tabBarAccessibilityLabel}
-                onPress={onPress}
-                onLongPress={onLongPress}
-                style={styles.tabButton}
-              >
-                {Icon && (
-                  <Icon
-                    size={24} // Adjust size as needed
-                    color={isFocused ? '#7E3AF2' : '#94A3B8'}
-                  />
-                )}
-                <Text
-                  style={[
-                    styles.tabBarLabel,
-                    { color: isFocused ? '#7E3AF2' : '#94A3B8' },
-                  ]}
+              return (
+                <TouchableOpacity
+                  key={route.key}
+                  accessibilityRole="button"
+                  accessibilityState={isFocused ? { selected: true } : {}}
+                  accessibilityLabel={options.tabBarAccessibilityLabel}
+                  onPress={onPress}
+                  onLongPress={onLongPress}
+                  style={styles.tabButton}
                 >
-                  {label as string}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-      );
-    }}
+                  {Icon && (
+                    <Icon
+                      size={24} // Adjust size as needed
+                      color={isFocused ? '#7E3AF2' : '#94A3B8'}
+                    />
+                  )}
+                  <Text
+                    style={[
+                      styles.tabBarLabel,
+                      { color: isFocused ? '#7E3AF2' : '#94A3B8' },
+                    ]}
+                  >
+                    {label as string}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        );
+      }}
     >
       <Tabs.Screen
         name="index"
