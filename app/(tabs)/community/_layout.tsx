@@ -3,17 +3,39 @@ import React from 'react';
 
 const CommunityLayout = () => {
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        animation: 'slide_from_right',
+      }}
+    >
+      <Stack.Screen name="index" />
       <Stack.Screen
-        name="index"
+        name="discussions/[id]"
         options={{
-          headerShown: false,
+          presentation: 'card',
+          animation: 'slide_from_right',
         }}
       />
       <Stack.Screen
-        name="[id]"
+        name="events/[id]"
         options={{
-          headerShown: false,
+          presentation: 'card',
+          animation: 'slide_from_right',
+        }}
+      />
+      <Stack.Screen
+        name="create-discussion"
+        options={{
+          presentation: 'modal',
+          animation: 'slide_from_bottom',
+        }}
+      />
+      <Stack.Screen
+        name="create-event"
+        options={{
+          presentation: 'modal',
+          animation: 'slide_from_bottom',
         }}
       />
     </Stack>

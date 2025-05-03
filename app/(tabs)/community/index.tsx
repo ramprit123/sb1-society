@@ -20,9 +20,10 @@ import {
   Heart,
   X,
 } from 'lucide-react-native';
-import { router } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 export default function CommunityScreen() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('events');
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilter, setShowFilter] = useState(false);
@@ -408,7 +409,10 @@ export default function CommunityScreen() {
               </View>
             </TouchableOpacity>
           ))}
-          <TouchableOpacity style={styles.createButton}>
+          <TouchableOpacity
+            style={styles.createButton}
+            onPress={() => router.push('/community/create-event')}
+          >
             <Text style={styles.createButtonText}>Create New Event</Text>
           </TouchableOpacity>
         </Animated.View>
@@ -470,7 +474,10 @@ export default function CommunityScreen() {
               </View>
             </TouchableOpacity>
           ))}
-          <TouchableOpacity style={styles.createButton}>
+          <TouchableOpacity
+            style={styles.createButton}
+            onPress={() => router.push('/community/create-discussion')}
+          >
             <Text style={styles.createButtonText}>Start New Discussion</Text>
           </TouchableOpacity>
         </Animated.View>
