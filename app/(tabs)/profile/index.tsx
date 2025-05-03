@@ -3,8 +3,10 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Switch, Image } f
 import Animated, { FadeInDown, FadeIn } from 'react-native-reanimated';
 import { Settings, User, CreditCard, Lock, Bell, CircleHelp as HelpCircle, LogOut, ChevronRight } from 'lucide-react-native';
 import { router } from 'expo-router';
+import { useTheme } from '@/context/theme-context';
 
 export default function ProfileScreen() {
+  const theme = useTheme();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
   

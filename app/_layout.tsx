@@ -1,3 +1,4 @@
+import { ThemeProvider } from '@/context/theme-context';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import {
   Inter_400Regular,
@@ -38,17 +39,19 @@ export default function RootLayout() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen
-            name="(tabs)"
-            options={{ animation: 'slide_from_right' }}
-          />
-          <Stack.Screen
-            name="(auth)"
-            options={{ animation: 'slide_from_right' }}
-          />
-          <Stack.Screen name="+not-found" />
-        </Stack>
+        <ThemeProvider>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen
+              name="(tabs)"
+              options={{ animation: 'slide_from_right' }}
+            />
+            <Stack.Screen
+              name="(auth)"
+              options={{ animation: 'slide_from_right' }}
+            />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </ThemeProvider>
         <StatusBar style="auto" />
       </GestureHandlerRootView>
     </SafeAreaView>
