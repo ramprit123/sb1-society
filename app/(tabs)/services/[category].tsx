@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingBottom: 20,
     backgroundColor: '#FFFFFF',
   },
@@ -123,6 +123,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-SemiBold',
     fontSize: 18,
     color: '#111827',
+    textTransform: 'capitalize',
   },
   formContainer: {
     padding: 20,

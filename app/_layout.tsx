@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView } from 'react-native';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import {
-  useFonts,
   Inter_400Regular,
   Inter_500Medium,
   Inter_600SemiBold,
   Inter_700Bold,
+  useFonts,
 } from '@expo-google-fonts/inter';
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
 

@@ -57,8 +57,8 @@ export default function TabLayout() {
           backgroundColor: '#FFFFFF',
           borderTopWidth: 1,
           borderTopColor: '#F1F5F9',
-          height: 70,
-          paddingBottom: Platform.OS === 'ios' ? 20 : 0, // Add padding for iOS devices
+          height: Platform.OS === 'android' ? 60 : 70,
+          paddingBottom: Platform.OS === 'ios' ? 20 : 0,
           shadowOffset: {
             width: 0,
             height: -1,
@@ -77,7 +77,12 @@ export default function TabLayout() {
         }
 
         return (
-          <View style={styles.tabBarContainer}>
+          <View
+            style={[
+              styles.tabBarContainer,
+              { height: Platform.OS === 'android' ? 60 : 70 },
+            ]}
+          >
             {/* Animated indicator */}
             <Animated.View style={[styles.indicator, indicatorStyle]} />
 
@@ -130,18 +135,25 @@ export default function TabLayout() {
                   accessibilityLabel={options.tabBarAccessibilityLabel}
                   onPress={onPress}
                   onLongPress={onLongPress}
-                  style={styles.tabButton}
+                  style={[
+                    styles.tabButton,
+                    { paddingTop: Platform.OS === 'android' ? 5 : 10 },
+                  ]}
                 >
                   {Icon && (
                     <Icon
-                      size={24} // Adjust size as needed
+                      size={Platform.OS === 'android' ? 22 : 24}
                       color={isFocused ? '#7E3AF2' : '#94A3B8'}
                     />
                   )}
                   <Text
                     style={[
                       styles.tabBarLabel,
-                      { color: isFocused ? '#7E3AF2' : '#94A3B8' },
+                      {
+                        color: isFocused ? '#7E3AF2' : '#94A3B8',
+                        fontSize: Platform.OS === 'android' ? 11 : 12,
+                        marginTop: Platform.OS === 'android' ? 2 : 4,
+                      },
                     ]}
                   >
                     {label as string}
