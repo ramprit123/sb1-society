@@ -1,6 +1,5 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { Stack } from 'expo-router'
+import { Stack } from 'expo-router';
+import React from 'react';
 
 const CommunityLayout = () => {
   return (
@@ -18,7 +17,7 @@ const CommunityLayout = () => {
         }}
       />
     </Stack>
-  )
-}
+  );
+};
 
-export default CommunityLayout
+export default CommunityLayout;

@@ -124,7 +124,7 @@ export default function CommunityScreen() {
     },
   ];
 
-  const discussions = [
+  const [discussions, setDiscussions] = useState([
     {
       id: 1,
       author: 'Rahul Shah',
@@ -136,6 +136,8 @@ export default function CommunityScreen() {
       time: '2 hours ago',
       replies: 8,
       likes: 15,
+      category: 'general',
+      isLiked: false,
     },
     {
       id: 2,
@@ -148,6 +150,8 @@ export default function CommunityScreen() {
       time: '5 hours ago',
       replies: 12,
       likes: 23,
+      category: 'sports',
+      isLiked: false,
     },
     {
       id: 3,
@@ -160,8 +164,43 @@ export default function CommunityScreen() {
       time: '1 day ago',
       replies: 19,
       likes: 31,
+      category: 'maintenance',
+      isLiked: false,
     },
-  ];
+  ]);
+
+  const filterDiscussions = () => {
+    return discussions.filter((discussion) => {
+      const matchesSearch =
+        discussion.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        discussion.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        discussion.author.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const matchesType =
+        selectedFilters.type === 'all'
+          ? true
+          : discussion.category === selectedFilters.type;
+
+      return matchesSearch && matchesType;
+    });
+  };
+
+  const handleLikeDiscussion = (id: number) => {
+    setDiscussions(
+      discussions.map((discussion) => {
+        if (discussion.id === id) {
+          return {
+            ...discussion,
+            likes: discussion.isLiked
+              ? discussion.likes - 1
+              : discussion.likes + 1,
+            isLiked: !discussion.isLiked,
+          };
+        }
+        return discussion;
+      })
+    );
+  };
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -375,12 +414,12 @@ export default function CommunityScreen() {
         </Animated.View>
       ) : (
         <Animated.View entering={FadeInDown.duration(600).delay(300)}>
-          {discussions.map((discussion, index) => (
+          {filterDiscussions().map((discussion, index) => (
             <TouchableOpacity
               key={discussion.id}
               style={styles.discussionCard}
               onPress={() =>
-                router.push(`/community/${discussion.id}`)
+                router.push(`/community/discussion/${discussion.id}`)
               }
             >
               <View style={styles.discussionHeader}>
@@ -392,22 +431,42 @@ export default function CommunityScreen() {
                   <Text style={styles.authorName}>{discussion.author}</Text>
                   <Text style={styles.discussionTime}>{discussion.time}</Text>
                 </View>
+                <View style={styles.categoryBadge}>
+                  <Text style={styles.categoryText}>{discussion.category}</Text>
+                </View>
               </View>
               <Text style={styles.discussionTitle}>{discussion.title}</Text>
               <Text style={styles.discussionContent}>{discussion.content}</Text>
               <View style={styles.discussionFooter}>
-                <View style={styles.footerItem}>
+                <TouchableOpacity
+                  style={styles.footerItem}
+                  onPress={() =>
+                    router.push(`/community/discussion/${discussion.id}`)
+                  }
+                >
                   <MessageCircle size={16} color="#6B7280" />
                   <Text style={styles.footerItemText}>
                     {discussion.replies} Replies
                   </Text>
-                </View>
-                <View style={styles.footerItem}>
-                  <Heart size={16} color="#6B7280" />
-                  <Text style={styles.footerItemText}>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.footerItem}
+                  onPress={() => handleLikeDiscussion(discussion.id)}
+                >
+                  <Heart
+                    size={16}
+                    color={discussion.isLiked ? '#EF4444' : '#6B7280'}
+                    fill={discussion.isLiked ? '#EF4444' : 'none'}
+                  />
+                  <Text
+                    style={[
+                      styles.footerItemText,
+                      discussion.isLiked && styles.likedText,
+                    ]}
+                  >
                     {discussion.likes} Likes
                   </Text>
-                </View>
+                </TouchableOpacity>
               </View>
             </TouchableOpacity>
           ))}
@@ -423,6 +482,22 @@ export default function CommunityScreen() {
 }
 
 const styles = StyleSheet.create({
+  categoryBadge: {
+    backgroundColor: '#F3F4F6',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    marginLeft: 'auto',
+  },
+  categoryText: {
+    fontFamily: 'Inter-Medium',
+    fontSize: 12,
+    color: '#4B5563',
+    textTransform: 'capitalize',
+  },
+  likedText: {
+    color: '#EF4444',
+  },
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
