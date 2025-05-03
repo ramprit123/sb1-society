@@ -14,7 +14,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  withTiming,
+  withDelay,
+  withSequence,
+} from 'react-native-reanimated';
 
 import { formatCurrency } from '@/utils/formatters';
 
@@ -111,21 +117,40 @@ export default function HomeScreen() {
     router.push(`/home/update/${id}`);
   };
 
+  const enteringAnimation = {
+    entering: (targetValues: { delay?: number }) => {
+      'worklet';
+      return {
+        initialValues: {
+          opacity: 0,
+          transform: [{ translateY: 20 }],
+        },
+        animations: {
+          opacity: withDelay(
+            targetValues.delay || 0,
+            withTiming(1, { duration: 600 })
+          ),
+          transform: [
+            {
+              translateY: withDelay(
+                targetValues.delay || 0,
+                withTiming(0, { duration: 600 })
+              ),
+            },
+          ],
+        },
+      };
+    },
+  };
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <Animated.View entering={FadeIn.duration(600)} style={styles.header}>
-        <View>
-          <Text style={styles.greeting}>Welcome, {CURRENT_USER.name}</Text>
-          <Text style={styles.date}>{formattedDate}</Text>
-        </View>
-        <TouchableOpacity>
-          <Image source={{ uri: CURRENT_USER.avatar }} style={styles.avatar} />
-        </TouchableOpacity>
-      </Animated.View>
+      <Animated.View style={styles.header} entering={FadeIn.delay(0)} />
 
       <Animated.View
-        entering={FadeInDown.duration(600).delay(100)}
         style={styles.quickActionsContainer}
+        {...enteringAnimation}
+        entering={FadeInDown.delay(100)}
       >
         <TouchableOpacity
           style={styles.quickAction}
@@ -170,8 +195,9 @@ export default function HomeScreen() {
 
       <View style={styles.rowContainer}>
         <Animated.View
-          entering={FadeInDown.duration(600).delay(200)}
           style={[styles.card, styles.halfCard]}
+          {...enteringAnimation}
+          entering={FadeInDown.delay(200)}
         >
           <Text style={styles.cardTitle}>Pending Bills</Text>
           <Text style={styles.billAmount}>
@@ -181,8 +207,9 @@ export default function HomeScreen() {
         </Animated.View>
 
         <Animated.View
-          entering={FadeInDown.duration(600).delay(250)}
           style={[styles.card, styles.halfCard]}
+          {...enteringAnimation}
+          entering={FadeInDown.delay(250)}
         >
           <View style={styles.noticeHeader}>
             <Text style={styles.cardTitle}>Latest Notices</Text>
@@ -197,8 +224,9 @@ export default function HomeScreen() {
       </View>
 
       <Animated.View
-        entering={FadeInDown.duration(600).delay(300)}
         style={styles.sectionHeader}
+        {...enteringAnimation}
+        entering={FadeInDown.delay(300)}
       >
         <Text style={styles.sectionTitle}>Upcoming Events</Text>
       </Animated.View>
@@ -211,8 +239,9 @@ export default function HomeScreen() {
         {events.map((event) => (
           <Animated.View
             key={event.id}
-            entering={FadeInDown.duration(600).delay(350)}
             style={styles.eventCard}
+            {...enteringAnimation}
+            entering={FadeInDown.delay(350)}
           >
             <TouchableOpacity onPress={() => handleEventPress(event.id)}>
               <Image source={{ uri: event.image }} style={styles.eventImage} />
@@ -232,15 +261,17 @@ export default function HomeScreen() {
       </ScrollView>
 
       <Animated.View
-        entering={FadeInDown.duration(600).delay(450)}
         style={styles.sectionHeader}
+        {...enteringAnimation}
+        entering={FadeInDown.delay(450)}
       >
         <Text style={styles.sectionTitle}>Community Updates</Text>
       </Animated.View>
 
       <Animated.View
-        entering={FadeInDown.duration(600).delay(500)}
         style={styles.updatesList}
+        {...enteringAnimation}
+        entering={FadeInDown.delay(500)}
       >
         {updates.map((update) => (
           <TouchableOpacity
