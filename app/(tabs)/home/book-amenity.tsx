@@ -37,17 +37,22 @@ export default function BookAmenityScreen() {
     <View style={styles.container}>
       <Stack.Screen
         options={{
-          headerLeft: () => (
+          title: '',
+          headerRight: () => (
             <TouchableOpacity onPress={() => router.back()}>
               <X size={24} color="#000" />
             </TouchableOpacity>
           ),
+          headerLeft(props) {
+            return <Text style={styles.title}>Book Amenity</Text>;
+          },
         }}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <Animated.View entering={FadeIn.duration(600)} style={styles.header}>
-          <Text style={styles.title}>Book Amenity</Text>
-          <Text style={styles.subtitle}>Select and book society facilities</Text>
+          <Text style={styles.subtitle}>
+            Select and book society facilities
+          </Text>
         </Animated.View>
 
         <Animated.View entering={FadeInDown.duration(600).delay(100)}>
