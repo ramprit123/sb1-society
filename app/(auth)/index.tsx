@@ -42,7 +42,9 @@ export default function LoginScreen() {
         style={styles.backgroundImageContainer}
       >
         <Image
-          source={require('@/assets/images/icon.png')}
+          source={{
+            uri: 'https://images.unsplash.com/photo-1628133287836-40bd5453bed1?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+          }}
           style={styles.backgroundImage}
         />
         <View style={styles.overlay} />
