@@ -42,9 +42,7 @@ export default function LoginScreen() {
         style={styles.backgroundImageContainer}
       >
         <Image
-          source={{
-            uri: 'https://images.pexels.com/photos/2462015/pexels-photo-2462015.jpeg?auto=compress&cs=tinysrgb&w=1200',
-          }}
+          source={require('@/assets/images/icon.png')}
           style={styles.backgroundImage}
         />
         <View style={styles.overlay} />
@@ -54,7 +52,7 @@ export default function LoginScreen() {
         entering={FadeInDown.duration(1000).delay(200)}
         style={styles.logoContainer}
       >
-        <Text style={styles.appTitle}>SocietyConnect</Text>
+        <Text style={styles.appTitle}>Nicon Infinity A&B</Text>
         <Text style={styles.appSubtitle}>Your Community, Connected</Text>
       </Animated.View>
 
