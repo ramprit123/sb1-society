@@ -2,7 +2,15 @@ import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import { ArrowLeft, Camera } from 'lucide-react-native';
 import { useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 export default function EditProfileScreen() {
@@ -11,7 +19,8 @@ export default function EditProfileScreen() {
     email: 'alex.johnson@example.com',
     phone: '+91 9876543210',
     apartment: 'Block C, Apartment 507',
-    image: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=150'
+    image:
+      'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=150',
   });
 
   const handleImagePick = async () => {
@@ -23,7 +32,7 @@ export default function EditProfileScreen() {
     });
 
     if (!result.canceled) {
-      setProfileData(prev => ({ ...prev, image: result.assets[0].uri }));
+      setProfileData((prev) => ({ ...prev, image: result.assets[0].uri }));
     }
   };
 
@@ -34,11 +43,11 @@ export default function EditProfileScreen() {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <Animated.View 
-        entering={FadeIn.duration(600)}
-        style={styles.header}
-      >
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+      <Animated.View entering={FadeIn.duration(600)} style={styles.header}>
+        <TouchableOpacity
+          onPress={() => router.back()}
+          style={styles.backButton}
+        >
           <ArrowLeft size={24} color="#111827" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Edit Profile</Text>
@@ -48,8 +57,14 @@ export default function EditProfileScreen() {
       </Animated.View>
 
       <View style={styles.imageContainer}>
-        <Image source={{ uri: profileData.image }} style={styles.profileImage} />
-        <TouchableOpacity style={styles.imagePickerButton} onPress={handleImagePick}>
+        <Image
+          source={{ uri: profileData.image }}
+          style={styles.profileImage}
+        />
+        <TouchableOpacity
+          style={styles.imagePickerButton}
+          onPress={handleImagePick}
+        >
           <Camera size={20} color="#7E3AF2" />
         </TouchableOpacity>
       </View>
@@ -60,7 +75,9 @@ export default function EditProfileScreen() {
           <TextInput
             style={styles.input}
             value={profileData.name}
-            onChangeText={(text) => setProfileData(prev => ({ ...prev, name: text }))}
+            onChangeText={(text) =>
+              setProfileData((prev) => ({ ...prev, name: text }))
+            }
             placeholder="Enter your full name"
           />
         </View>
@@ -70,7 +87,9 @@ export default function EditProfileScreen() {
           <TextInput
             style={styles.input}
             value={profileData.email}
-            onChangeText={(text) => setProfileData(prev => ({ ...prev, email: text }))}
+            onChangeText={(text) =>
+              setProfileData((prev) => ({ ...prev, email: text }))
+            }
             placeholder="Enter your email"
             keyboardType="email-address"
             autoCapitalize="none"
@@ -82,7 +101,9 @@ export default function EditProfileScreen() {
           <TextInput
             style={styles.input}
             value={profileData.phone}
-            onChangeText={(text) => setProfileData(prev => ({ ...prev, phone: text }))}
+            onChangeText={(text) =>
+              setProfileData((prev) => ({ ...prev, phone: text }))
+            }
             placeholder="Enter your phone number"
             keyboardType="phone-pad"
           />
@@ -93,7 +114,9 @@ export default function EditProfileScreen() {
           <TextInput
             style={styles.input}
             value={profileData.apartment}
-            onChangeText={(text) => setProfileData(prev => ({ ...prev, apartment: text }))}
+            onChangeText={(text) =>
+              setProfileData((prev) => ({ ...prev, apartment: text }))
+            }
             placeholder="Enter your apartment"
           />
         </View>

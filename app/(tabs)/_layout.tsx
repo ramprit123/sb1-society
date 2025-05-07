@@ -46,7 +46,6 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        // Hide the default tab bar completely
         tabBarStyle: {
           display: 'none', // Hide the default tab bar
           position: 'absolute',
@@ -67,9 +66,7 @@ export default function TabLayout() {
           shadowRadius: 4,
         },
       }}
-      // Provide a custom component to render the entire tab bar
       tabBar={(props) => {
-        // Update the active index when the tab changes
         const currentRoute = props.state.routes[props.state.index];
         const currentIndex = props.state.index;
         if (activeIndex.value !== currentIndex) {
