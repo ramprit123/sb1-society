@@ -7,6 +7,7 @@ import {
   Inter_700Bold,
   useFonts,
 } from '@expo-google-fonts/inter';
+import { ConvexProvider, ConvexReactClient } from 'convex/react';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -15,6 +16,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
+
+const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
+  unsavedChangesWarning: false,
+});
 
 export default function RootLayout() {
   useFrameworkReady();
@@ -39,19 +44,21 @@ export default function RootLayout() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <ThemeProvider>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen
-              name="(tabs)"
-              options={{ animation: 'slide_from_right' }}
-            />
-            <Stack.Screen
-              name="(auth)"
-              options={{ animation: 'slide_from_right' }}
-            />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </ThemeProvider>
+        <ConvexProvider client={convex}>
+          <ThemeProvider>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen
+                name="(tabs)"
+                options={{ animation: 'slide_from_right' }}
+              />
+              <Stack.Screen
+                name="(auth)"
+                options={{ animation: 'slide_from_right' }}
+              />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </ThemeProvider>
+        </ConvexProvider>
         <StatusBar style="auto" />
       </GestureHandlerRootView>
     </SafeAreaView>

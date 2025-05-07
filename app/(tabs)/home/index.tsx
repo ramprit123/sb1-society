@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { useQuery } from 'convex/react';
 import {
   CircleAlert as AlertCircle,
   Calendar,
@@ -23,6 +24,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { formatCurrency } from '@/utils/formatters';
+import { api } from '@/convex/_generated/api';
 
 const CURRENT_USER = {
   name: 'Alex',
@@ -98,6 +100,8 @@ const updates = [
 ];
 
 export default function HomeScreen() {
+  const users = useQuery(api.users.getUsers);
+  console.log('users', users);
   const today = new Date();
   const formattedDate = today.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -128,13 +132,13 @@ export default function HomeScreen() {
         animations: {
           opacity: withDelay(
             targetValues.delay || 0,
-            withTiming(1, { duration: 600 })
+            withTiming(1, { duration: 600 }),
           ),
           transform: [
             {
               translateY: withDelay(
                 targetValues.delay || 0,
-                withTiming(0, { duration: 600 })
+                withTiming(0, { duration: 600 }),
               ),
             },
           ],
