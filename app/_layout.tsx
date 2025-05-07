@@ -7,6 +7,8 @@ import {
   Inter_700Bold,
   useFonts,
 } from '@expo-google-fonts/inter';
+import { ClerkProvider } from '@clerk/clerk-expo';
+import { tokenCache } from '@clerk/clerk-expo/token-cache';
 import { ConvexProvider, ConvexReactClient } from 'convex/react';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -44,21 +46,23 @@ export default function RootLayout() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <ConvexProvider client={convex}>
-          <ThemeProvider>
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen
-                name="(tabs)"
-                options={{ animation: 'slide_from_right' }}
-              />
-              <Stack.Screen
-                name="(auth)"
-                options={{ animation: 'slide_from_right' }}
-              />
-              <Stack.Screen name="+not-found" />
-            </Stack>
-          </ThemeProvider>
-        </ConvexProvider>
+        <ClerkProvider tokenCache={tokenCache}>
+          <ConvexProvider client={convex}>
+            <ThemeProvider>
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen
+                  name="(tabs)"
+                  options={{ animation: 'slide_from_right' }}
+                />
+                <Stack.Screen
+                  name="(auth)"
+                  options={{ animation: 'slide_from_right' }}
+                />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+            </ThemeProvider>
+          </ConvexProvider>
+        </ClerkProvider>
         <StatusBar style="auto" />
       </GestureHandlerRootView>
     </SafeAreaView>
